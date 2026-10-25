@@ -1,7 +1,8 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
-import { login, type LoginValues } from '../services/authService';
-import { loginSchema } from '../validation/loginSchema';
+import { login } from '../../services/authService';
+import { loginSchema } from '../../validation/loginSchema';
+import type { LoginValues } from '../../shared/interfaces';
 
 const Login = () => {
   const navigate = useNavigate();
