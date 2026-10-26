@@ -17,7 +17,7 @@
     "jsx": "react-jsx",
     "types": ["node"]
   },
-  "include": ["src", "webpack.config.dev.ts"],
+  "include": ["src", "webpack.config.dev.ts", "webpack.config.prod.ts"],
   "exclude": ["node_modules"],
   "ts-node": {
     "esm": true // «———— enabling ESM for ts-node
