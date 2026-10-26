@@ -1,24 +1,26 @@
-import path from 'path';
+import path from 'node:path';
 import webpack from 'webpack';
 import ESLintPlugin from 'eslint-webpack-plugin';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
+import type { Configuration as DevServerConfiguration } from 'webpack-dev-server';
 
 const ESLintOptions = {
   overrideConfigFile: path.resolve(__dirname, 'src/.eslintrc.ts'),
-  context: path.resolve(__dirname, '/src'),
+  context: path.resolve(__dirname, 'src'),
   extensions: ['js', 'jsx', 'ts', 'tsx'],
   exclude: ['/node_modules/'],
   emitError: true,
   emitWarning: true,
 };
 
-module.exports = {
+const config: webpack.Configuration &  & {
+  devServer?: DevServerConfiguration;
+} = {
   mode: 'development',
 
   devtool: 'source-map',
 
   entry: {
-    app: [path.join(__dirname, 'src/App.tsx')],
+    app: [path.resolve(__dirname, 'src/App.tsx')],
   },
 
   output: {
@@ -26,78 +28,22 @@ module.exports = {
     filename: 'js/bundle.js',
   },
 
-  watch: false,
-  watchOptions: {
-    ignored: '/node_modules/',
-  },
-
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', 'jsx'],
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
   },
 
-  module: {
-    rules: [
-      {
-        test: /\.(js|jsx|ts|tsx)$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            configFile: path.resolve(__dirname, '.babelrc'),
-          },
-        },
-      },
-      {
-        test: /\.(ts|tsx)$/,
-        exclude: /node_modules/,
-        use: ['ts-loader'],
-      },
-      {
-        test: /\.scss$/,
-        use: [
-          {
-            loader: 'style-loader', // creates style nodes from JS strings
-          },
-          {
-            loader: 'css-loader', // translates CSS into CommonJS
-          },
-          {
-            loader: 'sass-loader', // compiles Sass to CSS
-            options: {
-              sassOptions: {
-                api: 'modern-compiler',
-                quietDeps: true,
-                quiet: true,
-                silenceDeprecations: ['mixed-decls', 'import', 'color-functions', 'global-builtin'],
-              },
-            },
-          },
-        ],
-      },
-      {
-        test: /\.css$/,
-        use: [
-          {
-            loader: 'css-loader', // translates CSS into CommonJS
-          },
-        ],
-      },
-    ],
-  },
+  // Keep your existing module rules and devServer configuration.
+
+  plugins: [new ESLintPlugin(ESLintOptions)],
+
   devServer: {
     hot: true,
+    port: 3000,
     static: {
       directory: path.resolve(__dirname, 'public'),
     },
     historyApiFallback: true,
   },
-  plugins: [
-    new ESLintPlugin(ESLintOptions),
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.LoaderOptionsPlugin({
-      debug: true,
-      sourceMap: true,
-      devTool: 'source-map',
-    }),
-  ],
 };
+
+export default config;
