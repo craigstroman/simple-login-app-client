@@ -1,5 +1,5 @@
-const path = require('path');
-const webpack = require('webpack');
+import path from 'path';
+import webpack from 'webpack';
 
 const filePath = path.join(__dirname, './public/js/');
 const fileName = 'main.min.js';
