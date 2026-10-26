@@ -66,6 +66,7 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-webpack-plugin": "^6.0.0",
     "html-webpack-plugin": "^5.6.8",
+    "jiti": "^2.7.0",
     "node-env-file": "^0.1.8",
     "prettier": "^3.9.10",
     "require-dir": "^1.2.0",
