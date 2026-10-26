@@ -1,63 +1,103 @@
 import path from 'path';
+import webpack from 'webpack';
+import ESLintPlugin from 'eslint-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+
+const ESLintOptions = {
+  overrideConfigFile: path.resolve(__dirname, 'src/.eslintrc.ts'),
+  context: path.resolve(__dirname, '/src'),
+  extensions: ['js', 'jsx', 'ts', 'tsx'],
+  exclude: ['/node_modules/'],
+  emitError: true,
+  emitWarning: true,
+};
 
 module.exports = {
   mode: 'development',
 
-  entry: './src/index.tsx',
+  devtool: 'source-map',
+
+  entry: {
+    app: [path.join(__dirname, 'src/App.tsx')],
+  },
 
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js',
-    clean: true,
-    publicPath: '/',
+    path: path.resolve(__dirname, 'public'),
+    filename: 'js/bundle.js',
+  },
+
+  watch: false,
+  watchOptions: {
+    ignored: '/node_modules/',
   },
 
   resolve: {
-    extensions: ['.tsx', '.ts', '.js', '.jsx'],
+    extensions: ['.ts', '.tsx', '.js', 'jsx'],
   },
 
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
-        use: 'ts-loader',
+        test: /\.(js|jsx|ts|tsx)$/,
         exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            configFile: path.resolve(__dirname, '.babelrc'),
+          },
+        },
+      },
+      {
+        test: /\.(ts|tsx)$/,
+        exclude: /node_modules/,
+        use: ['ts-loader'],
+      },
+      {
+        test: /\.scss$/,
+        use: [
+          {
+            loader: 'style-loader', // creates style nodes from JS strings
+          },
+          {
+            loader: 'css-loader', // translates CSS into CommonJS
+          },
+          {
+            loader: 'sass-loader', // compiles Sass to CSS
+            options: {
+              sassOptions: {
+                api: 'modern-compiler',
+                quietDeps: true,
+                quiet: true,
+                silenceDeprecations: ['mixed-decls', 'import', 'color-functions', 'global-builtin'],
+              },
+            },
+          },
+        ],
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
-      },
-      {
-        test: /\.s[ac]ss$/,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
+        use: [
+          {
+            loader: 'css-loader', // translates CSS into CommonJS
+          },
+        ],
       },
     ],
   },
-
+  devServer: {
+    hot: true,
+    static: {
+      directory: path.resolve(__dirname, 'public'),
+    },
+    historyApiFallback: true,
+  },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: './public/index.html',
+    new ESLintPlugin(ESLintOptions),
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.LoaderOptionsPlugin({
+      debug: true,
+      sourceMap: true,
+      devTool: 'source-map',
     }),
   ],
-
-  devServer: {
-    static: {
-      directory: path.join(__dirname, 'public'),
-    },
-    compress: true,
-    port: 3000,
-    hot: true,
-    historyApiFallback: true,
-
-    proxy: [
-      {
-        context: ['/api'],
-        target: 'http://localhost:9001',
-        changeOrigin: true,
-      },
-    ],
-  },
-
-  devtool: 'source-map',
 };
