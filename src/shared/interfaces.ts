@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, ChangeEvent } from 'react';
 
 export interface LoginValues {
   emailOrUsername: string;
@@ -16,4 +16,38 @@ export interface RegisterValues {
 
 export interface BaseLayoutProps {
   children?: ReactNode;
+}
+
+export interface ITogglePassword {
+  errors: ILoginErrors;
+  onSendValue: (data: string) => void;
+}
+
+export interface IForgotPassword {
+  email: string;
+}
+
+export interface ILoginValues {
+  usernameOrEmail: string;
+  password: string;
+}
+
+export interface ILoginErrors {
+  usernameOfEmail?: string;
+  password?: string;
+  new_password?: string;
+  password_confirmation?: string;
+}
+
+export interface InputFieldProps {
+  placeholder: string;
+  name: string;
+  fieldErrors: {
+    [key: string]: string;
+  };
+  type?: string;
+  textArea?: boolean;
+  value?: string;
+  showLabels?: boolean;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
