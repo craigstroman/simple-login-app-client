@@ -1,58 +1,83 @@
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import React, { useState, useEffect } from 'react';
+import * as Yup from 'yup';
+import { Formik, Form } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
 import { login } from '../../services/authService';
 import { loginSchema } from '../../validation/loginSchema';
-import type { LoginValues } from '../../shared/interfaces';
+import type { ILoginValues } from '../../shared/interfaces';
+import { TogglePassword } from '../../components/TogglePassword/TogglePassword';
+import { InputField } from '../../components/Inputfield/InputField';
+import './Login.scss';
 
 const Login = () => {
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [loggedIn, setLoggedIn] = useState<boolean>(false);
+  const [fieldType, setFieldType] = useState<string>('password');
 
-  const initialValues: LoginValues = {
-    emailOrUsername: '',
+  const initialValues: ILoginValues = {
+    usernameOrEmail: '',
     password: '',
   };
 
+  const validationSchema = Yup.object({
+    usernameOrEmail: Yup.string().required('Username is required.'),
+    password: Yup.string().required('Password is required.'),
+  });
+
+  const handleToggleData = (data: string) => {
+    setFieldType(data);
+  };
+
+  useEffect(() => {
+    if (loggedIn) {
+      navigate('/dashboard');
+    }
+  }, [loggedIn]);
   return (
-    <div className="auth-container">
+    <div className="login-container">
+      <h1>Login</h1>
+      {errorMessage && errorMessage.length && <div className="form-error">{errorMessage}</div>}
       <Formik
         initialValues={initialValues}
-        validationSchema={loginSchema}
-        onSubmit={async (values, { setStatus, setSubmitting }) => {
-          try {
-            setStatus('');
-
-            await login(values);
-
-            navigate('/dashboard', { replace: true });
-          } catch (error) {
-            setStatus(error instanceof Error ? error.message : 'Login failed');
-          } finally {
-            setSubmitting(false);
-          }
-        }}
+        onSubmit={async (values) => {}}
+        validationSchema={validationSchema}
       >
-        {({ isSubmitting, status }) => (
-          <Form className="auth-form">
-            <h1>Login</h1>
-            <label htmlFor="emailOrUsername">Username or Email</label>
-            <Field id="emailOrUsername" name="emailOrUsername" type="text" />
-            <ErrorMessage name="emailOrUsername" component="div" className="error" />w
-            <label htmlFor="password">Password</label>
-            <Field id="password" name="password" type="password" />
-            <ErrorMessage name="password" component="div" className="error" />
-            {status && (
-              <div className="error" role="alert">
-                {status}
+        {({ errors, submitForm }) => {
+          return (
+            <Form>
+              <div className="form-row">
+                <InputField
+                  name="usernameOrEmail"
+                  placeholder="Enter a username or email"
+                  fieldErrors={errors}
+                />
               </div>
-            )}
-            <button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? 'Logging in...' : 'Login'}
-            </button>
-            <p>
-              Don't have an account? <Link to="/register">Register</Link>
-            </p>
-          </Form>
-        )}
+
+              <div className="form-row">
+                <div className="password-input-container">
+                  <InputField
+                    name="password"
+                    placeholder="Enter a password"
+                    fieldErrors={errors}
+                    type={fieldType}
+                  />
+                  <TogglePassword errors={errors} onSendValue={handleToggleData} />
+                </div>
+              </div>
+              <div className="form-row">
+                <button type="submit" className="button" onClick={submitForm}>
+                  Login
+                </button>
+              </div>
+              <div className="form-row">
+                <a href="/forgot-password" className="forgot-password-link">
+                  Forgot Password?
+                </a>
+              </div>
+            </Form>
+          );
+        }}
       </Formik>
     </div>
   );
