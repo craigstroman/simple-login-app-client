@@ -9,7 +9,7 @@ import { TogglePassword } from '../../components/TogglePassword/TogglePassword';
 import { InputField } from '../../components/Inputfield/InputField';
 import './Login.scss';
 
-const Login = () => {
+export const Login = () => {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
@@ -40,7 +40,19 @@ const Login = () => {
       {errorMessage && errorMessage.length && <div className="form-error">{errorMessage}</div>}
       <Formik
         initialValues={initialValues}
-        onSubmit={async (values) => {}}
+        onSubmit={async (values, { setStatus, setSubmitting }) => {
+          try {
+            setStatus('');
+
+            await login(values);
+
+            navigate('/dashboard', { replace: true });
+          } catch (error) {
+            setStatus(error instanceof Error ? error.message : 'Login failed');
+          } finally {
+            setSubmitting(false);
+          }
+        }}
         validationSchema={validationSchema}
       >
         {({ errors, submitForm }) => {
@@ -82,5 +94,3 @@ const Login = () => {
     </div>
   );
 };
-
-export default Login;
