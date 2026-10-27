@@ -1,7 +1,7 @@
 import { ReactNode, ChangeEvent } from 'react';
 
 export interface LoginValues {
-  emailOrUsername: string;
+  usernameOrEmail: string;
   password: string;
 }
 
