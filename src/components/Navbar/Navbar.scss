@@ -1,0 +1,109 @@
+@import '../../shared/scss/buttons';
+
+header {
+  display: grid;
+  width: 100%;
+  background-color: #fe9d04;
+  height: 65px;
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  .header-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: end;
+    justify-content: end;
+    margin-top: 1.9rem;
+    margin-right: 1rem;
+    align-items: baseline;
+    .header-content-items {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      .link {
+        display: grid;
+        width: 100px;
+        justify-self: end;
+        a {
+          color: #000;
+          text-decoration: none;
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+  .navigation-content {
+    display: grid;
+    height: 70px;
+    clear: both;
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    .heading {
+      align-items: start;
+      justify-content: start;
+      justify-items: start;
+      h1 {
+        margin-left: 1rem;
+        a {
+          color: #000;
+          &:hover {
+            text-decoration: none;
+          }
+        }
+      }
+    }
+    .navbar-content {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      align-items: baseline;
+      text-align: right;
+      .create-post-link {
+        width: 100px;
+      }
+      .whois-online {
+        a {
+          color: #000;
+          text-decoration: none;
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+      .navbar-links {
+        display: grid;
+        margin-top: 1.9rem;
+        align-items: baseline;
+        justify-content: end;
+        width: 100%;
+        .navbar-link-content {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          grid-gap: 1rem;
+          width: 200px;
+          align-items: end;
+          justify-content: end;
+          .create-post-link {
+            a {
+              color: #000;
+              text-decoration: none;
+              &:hover {
+                text-decoration: underline;
+              }
+            }
+          }
+          .logout-button {
+            @include link-button;
+            text-decoration: none;
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+        }
+      }
+    }
+  }
+}
