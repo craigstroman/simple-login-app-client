@@ -53,7 +53,7 @@ export const Login = () => {
             setSubmitting(false);
           }
         }}
-        validationSchema={validationSchema}
+        validationSchema={loginSchema}
       >
         {({ errors, submitForm }) => {
           return (
@@ -85,6 +85,10 @@ export const Login = () => {
               <div className="form-row">
                 <a href="/forgot-password" className="forgot-password-link">
                   Forgot Password?
+                </a>
+                <br />
+                <a href="/register" className="register-link">
+                  Register
                 </a>
               </div>
             </Form>
