@@ -15,11 +15,9 @@
     "isolatedModules": true,
     "noEmit": false,
     "jsx": "react-jsx",
-    "types": ["node"]
+    "types": ["node"],
+    "allowArbitraryExtensions": true
   },
-  "include": ["src", "webpack.config.dev.ts", "webpack.config.prod.ts"],
-  "exclude": ["node_modules"],
-  "ts-node": {
-    "esm": true // «———— enabling ESM for ts-node
-  }
+  "include": ["src", "webpack.config.dev.ts", "webpack.config.prod.ts", "global.d.ts"],
+  "exclude": ["node_modules"]
 }
