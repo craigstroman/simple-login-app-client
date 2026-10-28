@@ -14,6 +14,15 @@ export interface RegisterValues {
   confirmPassword: string;
 }
 
+export interface IRegisterFormValues {
+  firstName: string;
+  lastName: string;
+  email: string;
+  username: string;
+  password: string;
+  confirmPassword: string;
+}
+
 export interface BaseLayoutProps {
   children?: ReactNode;
 }
