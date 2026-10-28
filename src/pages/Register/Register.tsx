@@ -1,23 +1,44 @@
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import React, { useState } from 'react';
+import { Formik, Form } from 'formik';
+import { InputField } from '../../components/Inputfield/InputField';
+import { TogglePassword } from '../../components/TogglePassword/TogglePassword';
 import { Link, useNavigate } from 'react-router-dom';
 import { register } from '../../services/authService';
 import { registerSchema } from '../../validation/registerSchema';
-import type { RegisterValues } from '../../shared/interfaces';
+import type { IRegisterFormValues } from '../../shared/interfaces';
+import './Register.scss';
 
-const Register = () => {
+export const Register = () => {
   const navigate = useNavigate();
-
-  const initialValues: RegisterValues = {
+  const [passwordFieldType, setPasswordFieldType] = useState<string>('password');
+  const [passwordConfirmationFieldType, setPasswordConfirmationFieldType] = useState<string>('password');
+  const initialValues: IRegisterFormValues = {
     firstName: '',
     lastName: '',
-    username: '',
     email: '',
+    username: '',
     password: '',
     confirmPassword: '',
   };
 
+  const handleToggleData = (fieldName: string) => {
+    if (fieldName === 'password') {
+      if (passwordFieldType === 'password') {
+        setPasswordFieldType('text');
+      } else {
+        setPasswordFieldType('password');
+      }
+    } else if (fieldName === 'password_confirmation') {
+      if (passwordConfirmationFieldType === 'password') {
+        setPasswordConfirmationFieldType('text');
+      } else {
+        setPasswordConfirmationFieldType('password');
+      }
+    }
+  };
   return (
-    <div className="auth-container">
+    <div className="register-container">
+      <h1>Register a new account</h1>
       <Formik
         initialValues={initialValues}
         validationSchema={registerSchema}
@@ -35,45 +56,74 @@ const Register = () => {
           }
         }}
       >
-        {({ isSubmitting, status }) => (
+        {({ isSubmitting, status, errors }) => (
           <Form className="auth-form">
             <h1>Register</h1>
+            <div className="form-row">
+              <InputField name="firstName" placeholder="Enter a first name" fieldErrors={errors} />
+            </div>
 
-            {[
-              ['firstName', 'First Name', 'text'],
-              ['lastName', 'Last Name', 'text'],
-              ['username', 'Username', 'text'],
-              ['email', 'Email', 'email'],
-              ['password', 'Password', 'password'],
-              ['confirmPassword', 'Confirm Password', 'password'],
-            ].map(([name, label, type]) => (
-              <div className="form-field" key={name}>
-                <label htmlFor={name}>{label}</label>
+            <div className="form-row">
+              <InputField name="lastName" placeholder="Enter a last name" fieldErrors={errors} />
+            </div>
 
-                <Field id={name} name={name} type={type} />
+            <div className="form-row">
+              <InputField
+                name="email"
+                placeholder="Enter a first email address"
+                fieldErrors={errors}
+                type="email
+                  "
+              />
+            </div>
 
-                <ErrorMessage name={name} component="div" className="error" />
+            <div className="form-row">
+              <InputField name="username" placeholder="Enter a username" fieldErrors={errors} />
+            </div>
+
+            <div className="form-row">
+              <div className="password-input-container">
+                <InputField
+                  name="password"
+                  placeholder="Enter a password"
+                  fieldErrors={errors}
+                  type={passwordFieldType}
+                />
+                <TogglePassword errors={errors} onSendValue={() => handleToggleData('password')} />
               </div>
-            ))}
+            </div>
 
+            <div className="form-row">
+              <div className="password-input-container">
+                <InputField
+                  name="password_confirmation"
+                  placeholder="Enter password confirmation"
+                  fieldErrors={errors}
+                  type={passwordConfirmationFieldType}
+                />
+                <TogglePassword
+                  errors={errors}
+                  onSendValue={() => handleToggleData('password_confirmation')}
+                />
+              </div>
+            </div>
+
+            <div className="form-row">
+              <button type="submit" className="button">
+                Register
+              </button>
+            </div>
             {status && (
               <div className="error" role="alert">
                 {status}
               </div>
             )}
-
-            <button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? 'Registering...' : 'Register'}
-            </button>
-
-            <p>
-              Already have an account? <Link to="/login">Login</Link>
-            </p>
           </Form>
         )}
       </Formik>
+      <p className="login-link">
+        Already have an account? <Link to="/login">Login</Link>
+      </p>
     </div>
   );
 };
-
-export default Register;
