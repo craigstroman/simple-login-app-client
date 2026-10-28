@@ -1,24 +1,18 @@
 import * as Yup from 'yup';
 
 export const registerSchema = Yup.object({
-  firstName: Yup.string().trim().required('First name is required'),
-
-  lastName: Yup.string().trim().required('Last name is required'),
-
-  username: Yup.string()
-    .trim()
-    .min(3, 'Username must have at least 3 characters')
-    .required('Username is required'),
-
-  email: Yup.string().trim().email('Invalid email address').required('Email is required'),
-
+  first_name: Yup.string().required('First name is required.'),
+  last_name: Yup.string().required('Last name is required.'),
+  email: Yup.string().email('Enter a valid email.').required('Email is required.'),
+  username: Yup.string().required('Username is required.'),
   password: Yup.string()
-    .min(8, 'Password must have at least 8 characters')
-    .matches(/[0-9]/, 'Must contain at least one number')
-    .matches(/[^A-Za-z0-9]/, 'Must contain at least one special character')
-    .required('Password is required'),
-
-  confirmPassword: Yup.string()
-    .oneOf([Yup.ref('password')], 'Passwords must match')
-    .required('Please confirm your password'),
+    .required('Password is required.')
+    .min(6, 'Password must be at least 6 characters long.')
+    .matches(/\w*[a-z]\w*/, 'Password must have a small letter')
+    .matches(/\w*[A-Z]\w*/, 'Password must have a capital letter')
+    .matches(/\d/, 'Password must have a number')
+    .matches(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g, 'Password must special characters.'),
+  password_confirmation: Yup.string()
+    .required('Password confirmation is required.')
+    .oneOf([Yup.ref('password')], 'Passwords must match.'),
 });
