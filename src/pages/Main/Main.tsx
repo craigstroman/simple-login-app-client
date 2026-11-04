@@ -3,7 +3,8 @@ import { Index } from '../Index/Index';
 import { Register } from '../Register/Register';
 import { Login } from '../Login/Login';
 import { ForgotPassword } from '../ForgotPassword/ForgotPassword';
-import Dashboard from '../Dashboard/Dashboard';
+import { Dashboard } from '../Dashboard/Dashboard';
+import ProtectedRoute from '../../components/ProtectedRoute/ProtectedRoute';
 
 export const Main: React.FC = () => {
   return (
@@ -13,7 +14,9 @@ export const Main: React.FC = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
