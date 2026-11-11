@@ -1,60 +1,42 @@
-import { LoginValues, RegisterValues } from '../shared/interfaces';
+import { useEffect } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { RegisterValues, iLoginResponseValues } from '../shared/interfaces';
 
 const API_URL = 'http://localhost:9001';
 
-async function handleResponse(response: Response) {
-  const data = await response.json();
+async function handleResponse(response: iLoginResponseValues) {
+  const navigate = useNavigate();
+  const data = response;
 
-  if (!response.ok) {
-    throw new Error(data.message || 'Request failed');
+  if (!data.email) {
+    throw new Error('Request failed');
   }
 
-  return data;
-}
-
-export async function login(values: LoginValues) {
-  const response = await fetch(`${API_URL}/login`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include',
-    body: JSON.stringify(values),
-  });
-
-  return handleResponse(response);
-}
-
-export async function register(values: RegisterValues) {
-  const { confirmPassword, ...userData } = values;
-
-  const response = await fetch(`${API_URL}/register`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include',
-    body: JSON.stringify(userData),
-  });
-
-  return handleResponse(response);
+  navigate('/dashboard', { replace: true });
 }
 
 export async function checkAuth(): Promise<boolean> {
-  const response = await fetch(`${API_URL}/me`, {
-    credentials: 'include',
+  const response = await axios.get('http://localhost:9001/api/is-logged-in', {
+    withCredentials: true,
   });
 
-  return response.ok;
+  return response.data.ok;
 }
 
 export async function logout(): Promise<void> {
-  const response = await fetch(`${API_URL}/logout`, {
-    method: 'POST',
-    credentials: 'include',
-  });
+  const response = await axios.post(
+    `${API_URL}/logout`,
+    {},
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true,
+    },
+  );
 
-  if (!response.ok) {
+  if (!response.data.ok) {
     throw new Error('Logout failed');
   }
 }
