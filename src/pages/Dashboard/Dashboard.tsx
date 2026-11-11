@@ -1,16 +1,28 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { logout } from '../../services/authService';
+import axios from 'axios';
 
-const Dashboard = () => {
+export const Dashboard = () => {
+  const API_URL = 'http://localhost:9001';
   const navigate = useNavigate();
   const [error, setError] = useState('');
 
   const handleLogout = async () => {
     try {
       setError('');
-      await logout();
-      navigate('/login', { replace: true });
+      const response = await axios.post(
+        `${API_URL}/logout`,
+        {},
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
+        },
+      );
+      if (response.status === 200) {
+        navigate('/login', { replace: true });
+      }
     } catch {
       setError('Unable to log out');
     }
@@ -27,5 +39,3 @@ const Dashboard = () => {
     </div>
   );
 };
-
-export default Dashboard;
