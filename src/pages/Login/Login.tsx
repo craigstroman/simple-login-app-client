@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import * as Yup from 'yup';
+import axios from 'axios';
 import { Formik, Form } from 'formik';
-import { Link, useNavigate } from 'react-router-dom';
-import { login } from '../../services/authService';
+import { useNavigate } from 'react-router-dom';
 import { loginSchema } from '../../validation/loginSchema';
-import type { ILoginValues } from '../../shared/interfaces';
+import type { ILoginValues, iLoginResponseValues } from '../../shared/interfaces';
 import { TogglePassword } from '../../components/TogglePassword/TogglePassword';
 import { InputField } from '../../components/Inputfield/InputField';
 import './Login.scss';
 
-export const Login = () => {
+// TODO: Get rid of authService file and just use the register page and login page to handle the calls. Copy what is in the reddit client application
+
+export const Login: React.FC = () => {
+  const API_URL = 'http://localhost:9001';
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState<string>('');
-  const [loggedIn, setLoggedIn] = useState<boolean>(false);
   const [fieldType, setFieldType] = useState<string>('password');
 
   const initialValues: ILoginValues = {
@@ -20,20 +21,10 @@ export const Login = () => {
     password: '',
   };
 
-  const validationSchema = Yup.object({
-    usernameOrEmail: Yup.string().required('Username is required.'),
-    password: Yup.string().required('Password is required.'),
-  });
-
   const handleToggleData = (data: string) => {
     setFieldType(data);
   };
 
-  useEffect(() => {
-    if (loggedIn) {
-      navigate('/dashboard');
-    }
-  }, [loggedIn]);
   return (
     <div className="login-container">
       <h1>Login</h1>
@@ -41,14 +32,23 @@ export const Login = () => {
       <Formik
         initialValues={initialValues}
         onSubmit={async (values, { setStatus, setSubmitting }) => {
+          let response: any;
           try {
             setStatus('');
+            response = await axios.post<iLoginResponseValues>(`${API_URL}/login`, values, {
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              withCredentials: true,
+            });
 
-            await login(values);
+            console.log('response.status: ', response.status);
 
-            navigate('/dashboard', { replace: true });
+            if (response.status === 200) {
+              navigate('/dashboard');
+            }
           } catch (error) {
-            setStatus(error instanceof Error ? error.message : 'Login failed');
+            setErrorMessage(error instanceof Error ? error.message : 'Login failed');
           } finally {
             setSubmitting(false);
           }
