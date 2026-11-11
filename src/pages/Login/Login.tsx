@@ -8,8 +8,6 @@ import { TogglePassword } from '../../components/TogglePassword/TogglePassword';
 import { InputField } from '../../components/Inputfield/InputField';
 import './Login.scss';
 
-// TODO: Get rid of authService file and just use the register page and login page to handle the calls. Copy what is in the reddit client application
-
 export const Login: React.FC = () => {
   const API_URL = 'http://localhost:9001';
   const navigate = useNavigate();
