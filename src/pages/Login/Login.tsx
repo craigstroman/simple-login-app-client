@@ -40,8 +40,6 @@ export const Login: React.FC = () => {
               withCredentials: true,
             });
 
-            console.log('response.status: ', response.status);
-
             if (response.status === 200) {
               navigate('/dashboard');
             }
