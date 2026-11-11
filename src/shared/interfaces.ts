@@ -60,3 +60,14 @@ export interface InputFieldProps {
   showLabels?: boolean;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
+
+export interface iLoginResponseValues {
+  id: number;
+  firstName: string;
+  lastName: string;
+  username: string;
+  email: string;
+  password: string;
+  createdAt: string;
+  updatedAt: string;
+}
