@@ -1,39 +1,49 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import { checkAuth } from '../../services/authService';
+import axios from 'axios';
 
 const ProtectedRoute = () => {
-  const [authenticated, setAuthenticated] = useState<boolean | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   useEffect(() => {
     let active = true;
 
-    const verifySession = async () => {
+    const checkAuth = async () => {
       try {
-        const result = await checkAuth();
+        const response = await axios.get('http://localhost:9001/api/is-logged-in', {
+          withCredentials: true,
+        });
+
+        console.log('isLoggedIn response:', response.data);
 
         if (active) {
-          setAuthenticated(result);
+          setIsAuthenticated(response.data.isLoggedIn === true);
         }
-      } catch {
+      } catch (error) {
+        console.error('Authentication error:', error);
+
         if (active) {
-          setAuthenticated(false);
+          setIsAuthenticated(false);
         }
       }
     };
 
-    verifySession();
+    checkAuth();
 
     return () => {
       active = false;
     };
   }, []);
 
-  if (authenticated === null) {
-    return <p>Checking authentication...</p>;
+  if (isAuthenticated === null) {
+    return <div>Checking authentication...</div>;
   }
 
-  return authenticated ? <Outlet /> : <Navigate to="/login" replace />;
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return <Outlet />;
 };
 
 export default ProtectedRoute;
