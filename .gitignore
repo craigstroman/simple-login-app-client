@@ -1,7 +1,7 @@
 /node_modules/
 /fixtures/
 /build
-/public
+/public/js
 
 package-lock.json
 
