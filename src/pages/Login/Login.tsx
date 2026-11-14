@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Formik, Form } from 'formik';
 import { useNavigate } from 'react-router-dom';
@@ -18,6 +18,14 @@ export const Login: React.FC = () => {
     usernameOrEmail: '',
     password: '',
   };
+
+  useEffect(() => {
+    console.log('Login mounted');
+
+    return () => {
+      console.log('Login unmounted');
+    };
+  }, []);
 
   const handleToggleData = (data: string) => {
     setFieldType(data);
