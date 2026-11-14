@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import axios from 'axios';
 
-const ProtectedRoute = () => {
+export const ProtectedRoute = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   useEffect(() => {
@@ -14,14 +14,10 @@ const ProtectedRoute = () => {
           withCredentials: true,
         });
 
-        console.log('isLoggedIn response:', response.data);
-
         if (active) {
           setIsAuthenticated(response.data.isLoggedIn === true);
         }
       } catch (error) {
-        console.error('Authentication error:', error);
-
         if (active) {
           setIsAuthenticated(false);
         }
@@ -45,5 +41,3 @@ const ProtectedRoute = () => {
 
   return <Outlet />;
 };
-
-export default ProtectedRoute;
