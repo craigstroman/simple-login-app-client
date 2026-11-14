@@ -1,10 +1,11 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, Navigate } from 'react-router-dom';
 import axios from 'axios';
 
-export const Dashboard = () => {
-  const API_URL = 'http://localhost:9001';
+export const Dashboard: React.FC = () => {
   const navigate = useNavigate();
+
+  const API_URL = 'http://localhost:9001';
   const [error, setError] = useState('');
 
   const handleLogout = async () => {
