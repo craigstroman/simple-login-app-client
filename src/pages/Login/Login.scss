@@ -27,9 +27,61 @@
       @include button;
       @include primary-button;
     }
+
     .forgot-password-link {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      width: 100%;
+      max-width: 736px;
+      margin: 0 auto;
       &:hover {
         text-decoration: none;
+      }
+    }
+  }
+
+  .social-login-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 100%;
+    max-width: 736px;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    .social-login-button {
+      display: grid;
+      grid-template-columns: 48px 1fr 48px;
+      align-items: center;
+      justify-content: center;
+      width: 325px;
+      min-height: 20px;
+      padding: 16px 48px;
+
+      border: 2px solid #171717;
+      border-radius: 17px;
+
+      background-color: #fff;
+      color: #171717;
+
+      font-size: 1.5em;
+      font-weight: 600;
+      font-family: inherit;
+
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      .google-plus-square {
+        color: #dd4b39;
+      }
+      .facebook-square {
+        color: #3b5998;
+      }
+      .linkedin {
+        color: #0976b4;
+      }
+      .apple {
+        color: #979797;
       }
     }
   }
