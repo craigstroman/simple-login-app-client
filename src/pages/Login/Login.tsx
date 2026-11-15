@@ -1,4 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faGooglePlusSquare,
+  faFacebookSquare,
+  faLinkedin,
+  faApple,
+} from '@fortawesome/free-brands-svg-icons';
 import axios from 'axios';
 import { Formik, Form } from 'formik';
 import { useNavigate } from 'react-router-dom';
@@ -7,6 +14,8 @@ import type { ILoginValues, iLoginResponseValues } from '../../shared/interfaces
 import { TogglePassword } from '../../components/TogglePassword/TogglePassword';
 import { InputField } from '../../components/Inputfield/InputField';
 import './Login.scss';
+
+// TODO: Continue working on Social login buttons
 
 export const Login: React.FC = () => {
   const API_URL = 'http://localhost:9001';
@@ -85,6 +94,39 @@ export const Login: React.FC = () => {
                 <button type="submit" className="button" onClick={submitForm}>
                   Login
                 </button>
+              </div>
+              <div className="form-row">Or login with:</div>
+              <div className="form-row">
+                <div className="social-login-container">
+                  <button type="button" className="social-login-button google-button">
+                    <FontAwesomeIcon icon={faGooglePlusSquare} className="google-plus-square" />
+                    Google
+                  </button>
+                </div>
+              </div>
+              <div className="form-row">
+                <div className="social-login-container">
+                  <button type="button" className="social-login-button google-button">
+                    <FontAwesomeIcon icon={faFacebookSquare} className="facebook-square" />
+                    Facebook
+                  </button>
+                </div>
+              </div>
+              <div className="form-row">
+                <div className="social-login-container">
+                  <button type="button" className="social-login-button google-button">
+                    <FontAwesomeIcon icon={faLinkedin} className="linkedin" />
+                    LinkedIn
+                  </button>
+                </div>
+              </div>
+              <div className="form-row">
+                <div className="social-login-container">
+                  <button type="button" className="social-login-button google-button">
+                    <FontAwesomeIcon icon={faApple} className="apple" />
+                    Apple
+                  </button>
+                </div>
               </div>
               <div className="form-row">
                 <a href="/forgot-password" className="forgot-password-link">
