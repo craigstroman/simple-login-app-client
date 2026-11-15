@@ -1,0 +1,12 @@
+@import '../../shared/scss/buttons';
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .button {
+    font-size: 1.5rem;
+    margin: 0 auto;
+    @include button;
+    @include danger-button;
+  }
+}
