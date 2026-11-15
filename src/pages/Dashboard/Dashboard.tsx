@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, Navigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './Dashboard.scss';
 
 export const Dashboard: React.FC = () => {
   const navigate = useNavigate();
@@ -30,13 +31,15 @@ export const Dashboard: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="dashboard-container">
       <h1>Dashboard</h1>
       <p>You are successfully logged in!</p>
 
       {error && <p role="alert">{error}</p>}
 
-      <button onClick={handleLogout}>Logout</button>
+      <button type="button" className="button" onClick={handleLogout}>
+        Logout
+      </button>
     </div>
   );
 };
