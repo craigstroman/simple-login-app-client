@@ -80,7 +80,7 @@ const config: WebpackConfig = {
             options: {
               sassOptions: {
                 quietDeps: true,
-                silenceDeprecations: ['mixed-decls', 'import', 'color-functions', 'global-builtin'],
+                silenceDeprecations: ['import', 'color-functions', 'global-builtin'],
               },
             },
           },
