@@ -8,7 +8,7 @@ import {
 } from '@fortawesome/free-brands-svg-icons';
 import axios from 'axios';
 import { Formik, Form } from 'formik';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { loginSchema } from '../../validation/loginSchema';
 import type { ILoginValues, iLoginResponseValues } from '../../shared/interfaces';
 import { TogglePassword } from '../../components/TogglePassword/TogglePassword';
@@ -28,16 +28,12 @@ export const Login: React.FC = () => {
     password: '',
   };
 
-  useEffect(() => {
-    console.log('Login mounted');
-
-    return () => {
-      console.log('Login unmounted');
-    };
-  }, []);
-
   const handleToggleData = (data: string) => {
     setFieldType(data);
+  };
+
+  const handleGoogleButtonClick = () => {
+    navigate('/auth/google');
   };
 
   return (
@@ -98,34 +94,34 @@ export const Login: React.FC = () => {
               <div className="form-row">Or login with:</div>
               <div className="form-row">
                 <div className="social-login-container">
-                  <button type="button" className="social-login-button google-button">
+                  <a className="social-login-button google-button" href="http://localhost:9001/auth/google">
                     <FontAwesomeIcon icon={faGooglePlusSquare} className="google-plus-square" />
                     Google
-                  </button>
+                  </a>
                 </div>
               </div>
               <div className="form-row">
                 <div className="social-login-container">
-                  <button type="button" className="social-login-button google-button">
+                  <a className="social-login-button google-button">
                     <FontAwesomeIcon icon={faFacebookSquare} className="facebook-square" />
                     Facebook
-                  </button>
+                  </a>
                 </div>
               </div>
               <div className="form-row">
                 <div className="social-login-container">
-                  <button type="button" className="social-login-button google-button">
+                  <a className="social-login-button google-button">
                     <FontAwesomeIcon icon={faLinkedin} className="linkedin" />
-                    LinkedIn
-                  </button>
+                    LinkedIn{' '}
+                  </a>
                 </div>
               </div>
               <div className="form-row">
                 <div className="social-login-container">
-                  <button type="button" className="social-login-button google-button">
+                  <a className="social-login-button google-button">
                     <FontAwesomeIcon icon={faApple} className="apple" />
                     Apple
-                  </button>
+                  </a>
                 </div>
               </div>
               <div className="form-row">
